@@ -33,10 +33,10 @@ public class Teleop {
 
     public void Move(double LFPower, double RFPower, double LBPower, double RBPower)
     {
-        leftDriveF.setPower(LFPower);
-        leftDriveB.setPower(LBPower);
-        rightDriveF.setPower(RFPower);
-        rightDriveB.setPower(RBPower);
+        leftDriveF.setPower(LFPower/1.5);
+        leftDriveB.setPower(LBPower/1.5);
+        rightDriveF.setPower(RFPower/1.5);
+        rightDriveB.setPower(RBPower/1.5);
     }
 
     public void RotateServo(double position)

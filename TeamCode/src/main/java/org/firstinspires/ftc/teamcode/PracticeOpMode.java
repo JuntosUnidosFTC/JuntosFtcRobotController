@@ -92,10 +92,10 @@ public class PracticeOpMode extends LinearOpMode {
             double turn  =  gamepad1.right_stick_x; //Turn
 
             //Wheels
-            double LFWheel = Range.clip(driveY - driveX + turn, -1.0, 1.0);
-            double RFWheel = Range.clip(driveY + driveX - turn, -1.0, 1.0);
-            double LBWheel = Range.clip(driveY + driveX + turn, -1.0, 1.0);
-            double RBWheel = Range.clip(driveY - driveX - turn, -1.0, 1.0);
+            double LFWheel = Range.clip(driveY - driveX - turn, -1.0, 1.0);
+            double RFWheel = Range.clip(driveY + driveX + turn, -1.0, 1.0);
+            double LBWheel = Range.clip(driveY + driveX - turn, -1.0, 1.0);
+            double RBWheel = Range.clip(driveY - driveX + turn, -1.0, 1.0);
 
             //double leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             //double rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
