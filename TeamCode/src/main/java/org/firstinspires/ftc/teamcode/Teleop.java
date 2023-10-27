@@ -39,6 +39,14 @@ public class Teleop {
         rightDriveB.setPower(RBPower/1.5);
     }
 
+    public void Stop()
+    {
+        leftDriveF.setPower(0);
+        leftDriveB.setPower(0);
+        rightDriveF.setPower(0);
+        rightDriveB.setPower(0);
+    }
+
     public void RotateServo(double position)
     {
         gateServo.setPosition(position);
