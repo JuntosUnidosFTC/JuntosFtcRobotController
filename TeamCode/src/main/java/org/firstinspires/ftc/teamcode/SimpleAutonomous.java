@@ -110,10 +110,10 @@ public class SimpleAutonomous extends LinearOpMode {
         leftDrive.setPower(FORWARD_SPEED);
         rightDrive.setPower(FORWARD_SPEED);
         runtime.reset();
-        double LFWheel = 1.0;
-        double RFWheel = 1.0;
-        double LBWheel = 1.0;
-        double RBWheel = 1.0;
+        double LFWheel = -0.5;
+        double RFWheel = 0.5;
+        double LBWheel = 0.5;
+        double RBWheel = -0.5;
         practiceRobot.Move(LFWheel, RFWheel, LBWheel, RBWheel);
 
         while (opModeIsActive() && (runtime.seconds() < 1.5)) {
