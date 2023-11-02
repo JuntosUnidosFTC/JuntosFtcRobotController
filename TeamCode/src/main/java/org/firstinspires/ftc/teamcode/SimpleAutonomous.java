@@ -96,6 +96,8 @@ public class SimpleAutonomous extends LinearOpMode {
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveBack.setDirection(DcMotor.Direction.FORWARD);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
@@ -103,7 +105,7 @@ public class SimpleAutonomous extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
+        Move(0.6, 4);
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
         // Step 1:  Strafe for 3 seconds
@@ -121,31 +123,23 @@ public class SimpleAutonomous extends LinearOpMode {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
-        practiceRobot.Stop();
-        // Step 2:  Spin right for 1.3 seconds
- /*       leftDrive.setPower(TURN_SPEED);
-        rightDrive.setPower(-TURN_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+    practiceRobot.Stop(); // Stop robot after 1.5 seconds
 
-        // Step 3:  Drive Backward for 1 Second
-        leftDrive.setPower(-FORWARD_SPEED);
-        rightDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-*/
-        // Step 4:  Stop
+    }
+    public void Move(double speed, int time_in_seconds)
+    {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+        leftDriveBack.setPower(speed);
+        rightDriveBack.setPower(speed);
+
+       sleep((time_in_seconds * 200));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
         leftDrive.setPower(0);
         rightDrive.setPower(0);
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-        sleep(1000);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
     }
+
 }
