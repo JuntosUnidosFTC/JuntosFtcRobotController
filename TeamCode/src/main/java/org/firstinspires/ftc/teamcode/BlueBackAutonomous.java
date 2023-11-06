@@ -106,8 +106,8 @@ public class BlueBackAutonomous extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        MoveRight(0.6, -0.6, -0.6, 0.6, 4);
         MoveForward(-0.6, 4);
-        MoveLeft(-0.6, 0.6, 0.6, -0.6, 4);
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
     }
 
@@ -117,7 +117,7 @@ public class BlueBackAutonomous extends LinearOpMode {
         leftDriveBack.setPower(speed);
         rightDriveBack.setPower(speed);
 
-        sleep((time_in_seconds * 200));
+        sleep((time_in_seconds * 625));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
@@ -127,13 +127,13 @@ public class BlueBackAutonomous extends LinearOpMode {
 
         sleep((time_in_seconds * 100));
     }
-    public void MoveLeft(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
+    public void MoveRight(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
         leftDrive.setPower(LFspeed);
         rightDrive.setPower(RFspeed);
         leftDriveBack.setPower(LBspeed);
         rightDriveBack.setPower(RBspeed);
 
-        sleep((time_in_seconds * 200));
+        sleep((time_in_seconds * 550));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);

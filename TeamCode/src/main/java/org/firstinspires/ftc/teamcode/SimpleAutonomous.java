@@ -116,7 +116,7 @@ public class SimpleAutonomous extends LinearOpMode {
         leftDriveBack.setPower(speed);
         rightDriveBack.setPower(speed);
 
-        sleep((time_in_seconds * 200));
+        sleep((time_in_seconds * 288));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
