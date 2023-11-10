@@ -108,6 +108,7 @@ public class RedBackAutonomous extends LinearOpMode {
         waitForStart();
         MoveLeft(-0.6, 0.6, 0.6, -0.6, 4);
         MoveForward(-0.6, 4);
+        MoveRight(0.6, -0.6, -0.6, 0.6, 4);
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
     }
 
@@ -117,7 +118,7 @@ public class RedBackAutonomous extends LinearOpMode {
         leftDriveBack.setPower(speed);
         rightDriveBack.setPower(speed);
 
-        sleep((time_in_seconds * 625));
+        sleep((time_in_seconds * 475));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
@@ -133,12 +134,29 @@ public class RedBackAutonomous extends LinearOpMode {
         leftDriveBack.setPower(LBspeed);
         rightDriveBack.setPower(RBspeed);
 
-        sleep((time_in_seconds * 550));
+        sleep((time_in_seconds * 400));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         leftDriveBack.setPower(0);
         rightDriveBack.setPower(0);
+        sleep((time_in_seconds * 100));
+    }
+    public void MoveRight(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
+        leftDrive.setPower(LFspeed);
+        rightDrive.setPower(RFspeed);
+        leftDriveBack.setPower(LBspeed);
+        rightDriveBack.setPower(RBspeed);
+
+        sleep((time_in_seconds * 70));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+        sleep((time_in_seconds * 100));
+
     }
 }

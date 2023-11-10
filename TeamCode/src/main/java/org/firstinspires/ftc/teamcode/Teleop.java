@@ -11,9 +11,8 @@ public class Teleop {
     private DcMotor leftDriveB = null; //left_drive_back
     private DcMotor rightDriveF = null; //right_drive_front
     private DcMotor rightDriveB = null; //right_drive_back
-    private DcMotor intakeMotor = null; //intake_motor
 
-    private Servo boxServo = null; //gate_servo
+    private Servo gateServo = null; //gate_servo
     private LinearOpMode CurrentOpMode = null;
     public Teleop(LinearOpMode opMode) {
         CurrentOpMode = opMode;
@@ -24,8 +23,7 @@ public class Teleop {
         leftDriveB = CurrentOpMode.hardwareMap.get(DcMotor.class, "left_drive_back");
         rightDriveF = CurrentOpMode.hardwareMap.get(DcMotor.class, "right_drive_front");
         rightDriveB = CurrentOpMode.hardwareMap.get(DcMotor.class, "right_drive_back");
-        intakeMotor = CurrentOpMode.hardwareMap.get(DcMotor.class, "intake_motor");
-        boxServo = CurrentOpMode.hardwareMap.get(Servo.class, "box_servo");
+        gateServo = CurrentOpMode.hardwareMap.get(Servo.class, "gate_servo");
 
         leftDriveF.setDirection(DcMotor.Direction.FORWARD);
         leftDriveB.setDirection(DcMotor.Direction.FORWARD);
@@ -48,21 +46,9 @@ public class Teleop {
         rightDriveF.setPower(0);
         rightDriveB.setPower(0);
     }
-    public void Intake(double Power)
-    {
-        intakeMotor.setPower(Power);
-    }
-    public void Outtake(double Power)
-    {
-        intakeMotor.setPower(-Power);
-    }
-    public void IntakeStop()
-    {
-        intakeMotor.setPower(0);
-    }
 
     public void RotateServo(double position)
     {
-        boxServo.setPosition(position);
+        gateServo.setPosition(position);
     }
 }

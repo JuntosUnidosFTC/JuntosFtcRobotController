@@ -71,7 +71,7 @@ public class SimpleAutonomous extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor leftDrive   = null;
-    private DcMotor         rightDrive  = null;
+    private DcMotor rightDrive  = null;
     private DcMotor rightDriveBack = null;
     private DcMotor leftDriveBack = null;
 
@@ -116,7 +116,7 @@ public class SimpleAutonomous extends LinearOpMode {
         leftDriveBack.setPower(speed);
         rightDriveBack.setPower(speed);
 
-        sleep((time_in_seconds * 288));
+        sleep((time_in_seconds * 230));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
