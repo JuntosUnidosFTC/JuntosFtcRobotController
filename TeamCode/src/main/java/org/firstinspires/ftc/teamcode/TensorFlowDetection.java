@@ -32,6 +32,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -68,10 +71,44 @@ public class TensorFlowDetection extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
+        /* Declare OpMode members. */
+        private DcMotor leftDrive   = null;
+        private DcMotor rightDrive  = null;
+        private DcMotor rightDriveBack = null;
+        private DcMotor leftDriveBack = null;
+
+        private ElapsedTime runtime = new ElapsedTime();
+
+        Teleop practiceRobot = new Teleop(this);
+
+        static final double     FORWARD_SPEED = 0.6;
+        static final double     TURN_SPEED    = 0.5;
+
     @Override
     public void runOpMode() {
 
+        // Initialize the drive system variables.
+        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive_front");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive_front");
+        rightDriveBack = hardwareMap.get(DcMotor.class, "right_drive_back");
+        leftDriveBack = hardwareMap.get(DcMotor.class, "left_drive_back");
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveBack.setDirection(DcMotor.Direction.FORWARD);
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Ready to run");    //
+        telemetry.update();
+
+        int position = 0;
+
         initTfod();
+
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -80,6 +117,11 @@ public class TensorFlowDetection extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+
+            position = FindPixel();
+
+            /*
+
             while (opModeIsActive()) {
 
                 FindPixel();
@@ -97,6 +139,8 @@ public class TensorFlowDetection extends LinearOpMode {
                 // Share the CPU.
                 sleep(20);
             }
+
+             */
         }
 
         // Save more CPU resources when camera is no longer needed.
@@ -129,22 +173,75 @@ public class TensorFlowDetection extends LinearOpMode {
     private int FindPixel() {
 
         // add the pseudo code from the 15th here
+        double conf = 0.0d;
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
+        while (conf < 75.0) {
+            // Step through the list of recognitions and display info for each one.
+            for (Recognition recognition : currentRecognitions) {
+                double x = (recognition.getLeft() + recognition.getRight()) / 2;
+                double y = (recognition.getTop() + recognition.getBottom()) / 2;
+                conf = recognition.getConfidence() * 100;
 
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                telemetry.addData("", " ");
+                telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                telemetry.addData("- Position", "%.0f / %.0f", x, y);
+                telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+                sleep (20);
+            } // end for() loop
 
-            telemetry.addData(""," ");
-            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-        }   // end for() loop
+            // Push telemetry to the Driver Station.
+            telemetry.update();
+            
+        } // end while() loop
      return(0);
     }
     // end method telemetryTfod()
+    public void MoveForward(double speed, int time_in_seconds) {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+        leftDriveBack.setPower(speed);
+        rightDriveBack.setPower(speed);
 
+        sleep((time_in_seconds * 475));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+
+        sleep((time_in_seconds * 100));
+    }
+    public void MoveLeft(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
+        leftDrive.setPower(LFspeed);
+        rightDrive.setPower(RFspeed);
+        leftDriveBack.setPower(LBspeed);
+        rightDriveBack.setPower(RBspeed);
+
+        sleep((time_in_seconds * 400));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+        sleep((time_in_seconds * 100));
+    }
+    public void MoveRight(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
+        leftDrive.setPower(LFspeed);
+        rightDrive.setPower(RFspeed);
+        leftDriveBack.setPower(LBspeed);
+        rightDriveBack.setPower(RBspeed);
+
+        sleep((time_in_seconds * 70));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+        sleep((time_in_seconds * 100));
+    }
 }   // end class
