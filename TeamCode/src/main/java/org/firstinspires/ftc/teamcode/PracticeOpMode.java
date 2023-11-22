@@ -63,14 +63,14 @@ public class PracticeOpMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     //Motors F = Front B = Back
     Teleop practiceRobot = new Teleop(this);
-    private Servo GateServo = null;
+    private Servo BoxServo = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         practiceRobot.init();
 
-        GateServo = hardwareMap.get(Servo.class, "gate_servo");
+        BoxServo = hardwareMap.get(Servo.class, "box_servo");
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
@@ -107,12 +107,28 @@ public class PracticeOpMode extends LinearOpMode {
             // This section is what controls the intake, as well as reversing it and stopping it.
             if(gamepad1.right_bumper)
             {
-                practiceRobot.RotateServo(0.01);
+                practiceRobot.Intake(0.75);
+            } else if (gamepad1.left_bumper) {
+                practiceRobot.Outtake(0.75);
+            } else {
+                practiceRobot.IntakeStop();
             }
-            if(gamepad1.left_bumper)
+
+            //This section is what controls the slider movement, as well as reversing it and stopping it.
+
+            //This section is what controls the box servo
+            if(gamepad1.a)
             {
-                practiceRobot.RotateServo(0.41);
+                practiceRobot.OpenBox();
+            } else if (gamepad1.b) {
+                practiceRobot.CloseBox();
+            } else {
+                practiceRobot.MiddleBox();
             }
+
+
+
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
