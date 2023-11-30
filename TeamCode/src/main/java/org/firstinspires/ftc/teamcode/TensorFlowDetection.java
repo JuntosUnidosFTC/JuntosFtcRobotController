@@ -177,9 +177,11 @@ public class TensorFlowDetection extends LinearOpMode {
         double conf = 0.0d;
         Recognition myrecognition = null;
 
-        List<Recognition> currentRecognitions = tfod.getRecognitions();
-        telemetry.addData("# Objects Detected", currentRecognitions.size());
         while (conf < 75.0 && opModeIsActive()) {
+            
+            List<Recognition> currentRecognitions = tfod.getRecognitions();
+            telemetry.addData("# Objects Detected", currentRecognitions.size());
+
             // Step through the list of recognitions and display info for each one.
             for (Recognition recognition : currentRecognitions) {
                 double x = (recognition.getLeft() + recognition.getRight()) / 2;

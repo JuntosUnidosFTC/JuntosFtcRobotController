@@ -78,6 +78,7 @@ public class SampleDetectionCode extends LinearOpMode {
             while (opModeIsActive()) {
 
                 telemetryTfod();
+                //FindPixel();
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
@@ -121,6 +122,7 @@ public class SampleDetectionCode extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
+
     private void telemetryTfod() {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
@@ -138,5 +140,4 @@ public class SampleDetectionCode extends LinearOpMode {
         }   // end for() loop
 
     }   // end method telemetryTfod()
-
 }   // end class
