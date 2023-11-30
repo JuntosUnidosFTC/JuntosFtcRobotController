@@ -119,10 +119,19 @@ public class PracticeOpMode extends LinearOpMode {
             //This section is what controls the box servo
             if(gamepad1.a)
             {
+                telemetry.addData("Servo","OpenBox:");
+                telemetry.addData("ServoPosition", BoxServo.getPosition());
+                telemetry.update();
                 practiceRobot.OpenBox();
             } else if (gamepad1.b) {
+                telemetry.addData("Servo","CloseBox");
+                telemetry.addData("ServoPosition", BoxServo.getPosition());
+                telemetry.update();
                 practiceRobot.CloseBox();
             } else {
+                telemetry.addData("Servo","MiddleBox");
+                telemetry.addData("ServoPosition", BoxServo.getPosition());
+                telemetry.update();
                 practiceRobot.MiddleBox();
             }
 

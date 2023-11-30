@@ -105,7 +105,7 @@ public class TensorFlowDetection extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
 
-        int position = 0;
+        Recognition myrecognition = null;
 
         initTfod();
 
@@ -117,11 +117,6 @@ public class TensorFlowDetection extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-
-            position = FindPixel();
-
-            /*
-
             while (opModeIsActive()) {
 
                 FindPixel();
@@ -139,9 +134,15 @@ public class TensorFlowDetection extends LinearOpMode {
                 // Share the CPU.
                 sleep(20);
             }
-
-             */
         }
+
+    /*    while (opModeIsActive()) {        //normally an if
+            sleep (1000);
+            telemetry.addData("Ready","Findpixel");
+            telemetry.update();
+            myrecognition = FindPixel();
+
+        }   */
 
         // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
@@ -170,14 +171,15 @@ public class TensorFlowDetection extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private int FindPixel() {
+    private Recognition FindPixel() {
 
         // add the pseudo code from the 15th here
         double conf = 0.0d;
+        Recognition myrecognition = null;
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
-        while (conf < 75.0) {
+        while (conf < 75.0 && opModeIsActive()) {
             // Step through the list of recognitions and display info for each one.
             for (Recognition recognition : currentRecognitions) {
                 double x = (recognition.getLeft() + recognition.getRight()) / 2;
@@ -188,14 +190,16 @@ public class TensorFlowDetection extends LinearOpMode {
                 telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
                 telemetry.addData("- Position", "%.0f / %.0f", x, y);
                 telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-                sleep (20);
+                telemetry.update();
+                sleep (500);      //originally 20 ms
+                myrecognition = recognition;
             } // end for() loop
 
             // Push telemetry to the Driver Station.
             telemetry.update();
             
         } // end while() loop
-     return(0);
+     return(myrecognition);
     }
     // end method telemetryTfod()
     public void MoveForward(double speed, int time_in_seconds) {
