@@ -175,9 +175,9 @@ public class TensorFlowDetection extends LinearOpMode {
 
         // add the pseudo code from the 15th here
         double conf = 0.0d;
-        Recognition myrecognition = null;
+        //Recognition myrecognition = null;
 
-        while (conf < 75.0 && opModeIsActive()) {
+        while (conf < 0.75 && opModeIsActive()) {
             
             List<Recognition> currentRecognitions = tfod.getRecognitions();
             telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -186,22 +186,21 @@ public class TensorFlowDetection extends LinearOpMode {
             for (Recognition recognition : currentRecognitions) {
                 double x = (recognition.getLeft() + recognition.getRight()) / 2;
                 double y = (recognition.getTop() + recognition.getBottom()) / 2;
-                conf = recognition.getConfidence() * 100;
+                conf = recognition.getConfidence();
 
                 telemetry.addData("", " ");
                 telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
                 telemetry.addData("- Position", "%.0f / %.0f", x, y);
                 telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-                telemetry.update();
                 sleep (500);      //originally 20 ms
-                myrecognition = recognition;
+                //myrecognition = recognition;
             } // end for() loop
 
             // Push telemetry to the Driver Station.
             telemetry.update();
             
         } // end while() loop
-     return(myrecognition);
+     return(null);
     }
     // end method telemetryTfod()
     public void MoveForward(double speed, int time_in_seconds) {
