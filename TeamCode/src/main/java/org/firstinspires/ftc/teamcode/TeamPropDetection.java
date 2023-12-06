@@ -29,9 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -55,14 +55,16 @@ public class TeamPropDetection extends LinearOpMode {
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "MyModelStoredAsAsset.tflite";
+    private static final String TFOD_MODEL_ASSET = "TestDetection.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/myCustomModel.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/TestDetection.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-            "Pixel",
+            "Diabolo",
     };
+
+    private ElapsedTime     runtime = new ElapsedTime();
 
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
@@ -78,6 +80,7 @@ public class TeamPropDetection extends LinearOpMode {
     public void runOpMode() {
 
         initTfod();
+        int position;
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -86,9 +89,11 @@ public class TeamPropDetection extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            while (opModeIsActive()) {
+            //  while (opModeIsActive()) {
 
-                FindPixel();
+                position = FindPixel();
+                telemetry.addData("Position",position);
+                visionPortal.stopStreaming();
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
@@ -102,7 +107,7 @@ public class TeamPropDetection extends LinearOpMode {
 
                 // Share the CPU.
                 sleep(20);
-            }
+         //   }
         }
 
         // Save more CPU resources when camera is no longer needed.
@@ -123,12 +128,12 @@ public class TeamPropDetection extends LinearOpMode {
                 // choose one of the following:
                 //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
                 //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                //.setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelAssetName(TFOD_MODEL_ASSET)
                 //.setModelFileName(TFOD_MODEL_FILE)
 
                 // The following default settings are available to un-comment and edit as needed to
                 // set parameters for custom models.
-                //.setModelLabels(LABELS)
+                .setModelLabels(LABELS)
                 //.setIsModelTensorFlow2(true)
                 //.setIsModelQuantized(true)
                 //.setModelInputSize(300)
@@ -177,21 +182,28 @@ public class TeamPropDetection extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private Recognition FindPixel() {
+    private int FindPixel() {
+        // Camera settings
+        tfod.setZoom(1.0); // Change this value to 2.0 for farther objects, default 1.0
 
         // add the pseudo code from the 15th here
         double conf = 0.0d;
-        //Recognition myrecognition = null;
+        double x = 0.0d;
+        double y = 0.0d;
+        int position = 2;
 
-        while (conf < 0.75 && opModeIsActive()) {
+        //Recognition myrecognition = null;
+        runtime.reset();
+
+        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 3.0)) {
 
             List<Recognition> currentRecognitions = tfod.getRecognitions();
             telemetry.addData("# Objects Detected", currentRecognitions.size());
 
             // Step through the list of recognitions and display info for each one.
             for (Recognition recognition : currentRecognitions) {
-                double x = (recognition.getLeft() + recognition.getRight()) / 2;
-                double y = (recognition.getTop() + recognition.getBottom()) / 2;
+                x = (recognition.getLeft() + recognition.getRight()) / 2;
+                y = (recognition.getTop() + recognition.getBottom()) / 2;
                 conf = recognition.getConfidence();
 
                 telemetry.addData("", " ");
@@ -206,6 +218,18 @@ public class TeamPropDetection extends LinearOpMode {
             telemetry.update();
 
         } // end while() loop
-        return(null);
+        if (runtime.seconds() > 3.0) {
+            position = 2;
+        }
+        else {
+            if (x <= 400)
+            {
+                position = 0;
+            }
+            else {
+                position = 1;
+            }
+        }
+        return(position);
     } // end method telemetryTfod()
 }   // end class
