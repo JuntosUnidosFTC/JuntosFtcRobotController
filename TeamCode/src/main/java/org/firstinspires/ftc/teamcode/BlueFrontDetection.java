@@ -36,6 +36,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
@@ -47,21 +48,26 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "Concept: Red Prop Detection", group = "Concept")
+@TeleOp(name = "Concept: Front Blue Diabolo", group = "Concept")
 //@Disabled
-public class RedDiaboloDetection extends LinearOpMode {
+public class BlueFrontDetection extends LinearOpMode {
+
+    private DcMotor leftDrive   = null;
+    private DcMotor rightDrive  = null;
+    private DcMotor rightDriveBack = null;
+    private DcMotor leftDriveBack = null;
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "Red_Diabolo_Recognition.tflite";
+    private static final String TFOD_MODEL_ASSET = "Blue_Diabolo_Recognition.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/Red_Diabolo_Recognition.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/Blue_Diabolo_Recognition.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-            "Red_Diabolo",
+            "Blue_Diabolo",
     };
 
     private ElapsedTime     runtime = new ElapsedTime();
@@ -220,17 +226,56 @@ public class RedDiaboloDetection extends LinearOpMode {
         } // end while() loop
         if (runtime.seconds() > 3.0) {
             position = 2;
+            MoveForward(0.2,0.7);
+            MoveDiagonally(0.2,0.1,0.2,0.1,0.6);
+            MoveForward(0.2,0.4);
         }
         else {
             if (x <= 250)
             {
                 position = 0;
-
+                MoveForward(0.2,0.7);
+                MoveDiagonally(0.5,0.0,0.0,0.5, 0.2);
             }
             else {
                 position = 1;
+                MoveForward(0.5,2);
             }
         }
         return(position);
     } // end method telemetryTfod()
+
+    public void MoveForward(double speed, double time_in_seconds) {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+        leftDriveBack.setPower(speed);
+        rightDriveBack.setPower(speed);
+
+        sleep((long) (time_in_seconds * 200));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+
+        sleep((long) (time_in_seconds * 100)); }
+
+    public void MoveDiagonally(double LFspeed, double RFspeed, double LBspeed, double RBspeed, double time_in_seconds)
+        {
+            leftDrive.setPower(LFspeed);
+            rightDrive.setPower(RFspeed);
+            leftDriveBack.setPower(LBspeed);
+            rightDriveBack.setPower(RBspeed);
+
+            sleep((long) (time_in_seconds * 400.0));
+            telemetry.addData("Reached and passed time", "yes");
+            telemetry.update();
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+            leftDriveBack.setPower(0);
+            rightDriveBack.setPower(0);
+            sleep((long) (time_in_seconds * 100));
+        }
 }   // end class
+

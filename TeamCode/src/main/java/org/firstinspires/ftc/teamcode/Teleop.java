@@ -77,17 +77,12 @@ public class Teleop {
 
     public void OpenBox()
     {
-        boxServo.setPosition(0.2); //Placeholder Value!!!
+        boxServo.setPosition(0.0); //Placeholder Value!!!
     }
     public void CloseBox()
     {
-        boxServo.setPosition(0.0); //Placeholder Value!!!
+        boxServo.setPosition(0.8); //Placeholder Value!!!
     }
-    public void MiddleBox()
-    {
-        boxServo.setPosition(0.2); //Placeholder Value!!!
-    }
-
 
     public void SlideUpStart()
     {
