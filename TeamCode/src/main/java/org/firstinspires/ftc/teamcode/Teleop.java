@@ -12,6 +12,8 @@ public class Teleop {
     private DcMotor rightDriveF = null; //right_drive_front
     private DcMotor rightDriveB = null; //right_drive_back
     private DcMotor intakeMotor = null; //intake_motor
+    private DcMotor leftSlideMotor = null; //left_slide_motor
+    private DcMotor rightSlideMotor = null; //right_slide_motor
 
     private Servo boxServo = null; //box_servo
     private LinearOpMode CurrentOpMode = null;
@@ -26,11 +28,17 @@ public class Teleop {
         rightDriveB = CurrentOpMode.hardwareMap.get(DcMotor.class, "right_drive_back");
         intakeMotor = CurrentOpMode.hardwareMap.get(DcMotor.class, "intake_motor");
         boxServo = CurrentOpMode.hardwareMap.get(Servo.class, "box_servo");
+        leftSlideMotor = CurrentOpMode.hardwareMap.get(DcMotor.class, "left_slide_motor");
+        rightSlideMotor = CurrentOpMode.hardwareMap.get(DcMotor.class,"right_slide_motor");
 
         leftDriveF.setDirection(DcMotor.Direction.FORWARD);
         leftDriveB.setDirection(DcMotor.Direction.FORWARD);
         rightDriveF.setDirection(DcMotor.Direction.REVERSE);
         rightDriveB.setDirection(DcMotor.Direction.REVERSE);
+
+        leftSlideMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightSlideMotor.setDirection(DcMotor.Direction.REVERSE);
+
     }
 
     public void Move(double LFPower, double RFPower, double LBPower, double RBPower)
@@ -69,7 +77,7 @@ public class Teleop {
 
     public void OpenBox()
     {
-        boxServo.setPosition(0.4); //Placeholder Value!!!
+        boxServo.setPosition(0.2); //Placeholder Value!!!
     }
     public void CloseBox()
     {
@@ -79,4 +87,22 @@ public class Teleop {
     {
         boxServo.setPosition(0.2); //Placeholder Value!!!
     }
+
+
+    public void SlideUpStart()
+    {
+        leftSlideMotor.setPower(-0.3); //Placeholder Value!!!
+        rightSlideMotor.setPower(-0.3); //Placeholder Value!!!
+    }
+    public void SlideDownStart()
+    {
+        leftSlideMotor.setPower(0.25); //Placeholder Value!!!
+        rightSlideMotor.setPower(0.25); //Placeholder Value!!!
+    }
+    public void SlideStop()
+    {
+        leftSlideMotor.setPower(0);
+        rightSlideMotor.setPower(0);
+    }
+
 }

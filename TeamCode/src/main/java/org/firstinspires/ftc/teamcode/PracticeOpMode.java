@@ -135,7 +135,14 @@ public class PracticeOpMode extends LinearOpMode {
                 practiceRobot.MiddleBox();
             }
 
-
+            if(gamepad1.y)
+            {
+                practiceRobot.SlideUpStart();
+            } else if (gamepad1.x) {
+                practiceRobot.SlideDownStart();
+            } else {
+                practiceRobot.SlideStop();
+            }
 
 
 
