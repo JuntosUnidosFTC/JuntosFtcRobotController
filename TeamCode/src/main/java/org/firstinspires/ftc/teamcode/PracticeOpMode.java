@@ -117,7 +117,7 @@ public class PracticeOpMode extends LinearOpMode {
             //This section is what controls the slider movement, as well as reversing it and stopping it.
 
             //This section is what controls the box servo
-            if (gamepad1.a) {
+            if (gamepad1.b) {
                 practiceRobot.OpenBox();
                 telemetry.addData("Servo","MiddleBox");
                 telemetry.addData("ServoPosition", BoxServo.getPosition());

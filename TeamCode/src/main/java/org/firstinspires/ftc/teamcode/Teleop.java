@@ -43,10 +43,10 @@ public class Teleop {
 
     public void Move(double LFPower, double RFPower, double LBPower, double RBPower)
     {
-        leftDriveF.setPower(LFPower/1.5);
-        leftDriveB.setPower(LBPower/1.5);
-        rightDriveF.setPower(RFPower/1.5);
-        rightDriveB.setPower(RBPower/1.5);
+        leftDriveF.setPower(LFPower/1.25);
+        leftDriveB.setPower(LBPower/1.25);
+        rightDriveF.setPower(RFPower/1.25);
+        rightDriveB.setPower(RBPower/1.25);
     }
 
     public void Stop()
@@ -59,11 +59,11 @@ public class Teleop {
 
     public void Intake(double Power)
     {
-        intakeMotor.setPower(Power);
+        intakeMotor.setPower(-Power);
     }
     public void Outtake(double Power)
     {
-        intakeMotor.setPower(-Power);
+        intakeMotor.setPower(Power);
     }
     public void IntakeStop()
     {
@@ -81,18 +81,18 @@ public class Teleop {
     }
     public void CloseBox()
     {
-        boxServo.setPosition(0.8); //Placeholder Value!!!
+        boxServo.setPosition(0.6); //Placeholder Value!!!
     }
 
     public void SlideUpStart()
     {
-        leftSlideMotor.setPower(-0.3); //Placeholder Value!!!
-        rightSlideMotor.setPower(-0.3); //Placeholder Value!!!
+        leftSlideMotor.setPower(-0.65); //Placeholder Value!!!
+        rightSlideMotor.setPower(-0.65); //Placeholder Value!!!
     }
     public void SlideDownStart()
     {
-        leftSlideMotor.setPower(0.25); //Placeholder Value!!!
-        rightSlideMotor.setPower(0.25); //Placeholder Value!!!
+        leftSlideMotor.setPower(0.8); //Placeholder Value!!!
+        rightSlideMotor.setPower(0.8); //Placeholder Value!!!
     }
     public void SlideStop()
     {

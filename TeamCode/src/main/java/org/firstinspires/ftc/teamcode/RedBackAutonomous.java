@@ -106,9 +106,9 @@ public class RedBackAutonomous extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        MoveLeft(-0.6, 0.6, 0.6, -0.6, 4);
-        MoveForward(-0.6, 4);
-        MoveRight(0.6, -0.6, -0.6, 0.6, 4);
+        MoveLeft(-0.6, 0.6, 0.6, -0.6, 6);
+        MoveForward(-0.6, 6);
+        MoveRight(0.6, -0.6, -0.6, 0.6, 6);
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
     }
 
