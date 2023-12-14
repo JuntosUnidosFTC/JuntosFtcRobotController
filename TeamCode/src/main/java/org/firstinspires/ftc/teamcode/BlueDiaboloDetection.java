@@ -96,10 +96,10 @@ public class BlueDiaboloDetection extends LinearOpMode {
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
-        rightDriveBack.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD); //FORWARD
+        rightDrive.setDirection(DcMotor.Direction.REVERSE); //REVERSE
+        leftDriveBack.setDirection(DcMotor.Direction.FORWARD);
+        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
@@ -247,15 +247,20 @@ public class BlueDiaboloDetection extends LinearOpMode {
 
         } // end while() loop
         if (runtime.seconds() > 3.0) {
-            position = 2;
+            position = 2; // Right spike mark
         }
         else {
             if (x <= 250)
             {
-                position = 0;
+                position = 0; // Left spike mark
             }
             else {
-                position = 1;
+                position = 1; // Middle spike mark
+
+                TurnRight(0.5,0.2);
+                MoveForward(0.4,3);
+
+
             }
         }
         return(position);
@@ -308,6 +313,21 @@ public class BlueDiaboloDetection extends LinearOpMode {
         rightDriveBack.setPower(0);
         sleep((time_in_seconds * 100));
 
+    }
+
+    public void TurnRight(double speed, double time_in_seconds) {
+        leftDrive.setPower(speed*-1);
+        rightDrive.setPower(speed);
+
+        sleep(((long) (time_in_seconds * 1000)));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+
+        sleep(((long) (time_in_seconds * 1000)));
     }
 
 }   // end class
