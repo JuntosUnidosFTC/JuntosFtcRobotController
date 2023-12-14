@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -64,7 +65,15 @@ public class BlueDiaboloDetection extends LinearOpMode {
             "Blue_Diabolo",
     };
 
-    private ElapsedTime     runtime = new ElapsedTime();
+    private DcMotor leftDrive   = null;
+    private DcMotor rightDrive  = null;
+    private DcMotor rightDriveBack = null;
+    private DcMotor leftDriveBack = null;
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+    static final double     FORWARD_SPEED = 0.6;
+    static final double     TURN_SPEED    = 0.5;
 
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
@@ -78,6 +87,25 @@ public class BlueDiaboloDetection extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive_front");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive_front");
+        rightDriveBack = hardwareMap.get(DcMotor.class, "right_drive_back");
+        leftDriveBack = hardwareMap.get(DcMotor.class, "left_drive_back");
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveBack.setDirection(DcMotor.Direction.FORWARD);
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Ready to run");    //
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
 
         initTfod();
         int position;
@@ -232,4 +260,54 @@ public class BlueDiaboloDetection extends LinearOpMode {
         }
         return(position);
     } // end method telemetryTfod()
+
+    public void MoveForward(double speed, int time_in_seconds) {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+        leftDriveBack.setPower(speed);
+        rightDriveBack.setPower(speed);
+
+        sleep((time_in_seconds * 475));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+
+        sleep((time_in_seconds * 100));
+    }
+    public void MoveRight(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
+        leftDrive.setPower(LFspeed);
+        rightDrive.setPower(RFspeed);
+        leftDriveBack.setPower(LBspeed);
+        rightDriveBack.setPower(RBspeed);
+
+        sleep((time_in_seconds * 400));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+        sleep((time_in_seconds * 100));
+
+    }
+    public void MoveLeft(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
+        leftDrive.setPower(LFspeed);
+        rightDrive.setPower(RFspeed);
+        leftDriveBack.setPower(LBspeed);
+        rightDriveBack.setPower(RBspeed);
+
+        sleep((time_in_seconds * 70));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+        sleep((time_in_seconds * 100));
+
+    }
+
 }   // end class
