@@ -248,6 +248,21 @@ public class BlueDiaboloDetection extends LinearOpMode {
         } // end while() loop
         if (runtime.seconds() > 3.0) {
             position = 2; // Right spike mark
+
+            // Putting Pixel On Right Spike Mark
+            TurnRight(0.5,0.2);
+            MoveForward(0.3,0.5);
+            TurnRight(0.3,0.2);
+            MoveForward(0.4,0.5);
+            TurnRight(0.3,0.3);
+            MoveForward(0.5,0.7);
+
+            //Parking Backstage
+            MoveBackward(0.4, 0.5);
+            MoveLeft(0.5, 2);
+            MoveForward(0.5, 2);
+            MoveLeft(0.5, 10);
+
         }
         else {
             if (x <= 250)
@@ -257,8 +272,15 @@ public class BlueDiaboloDetection extends LinearOpMode {
             else {
                 position = 1; // Middle spike mark
 
+                //Place Pixel On Middle Spike Mark
                 TurnRight(0.5,0.2);
-                MoveForward(0.4,3);
+                MoveForward(0.4,2.3);
+
+                //Park Backstage
+                MoveBackward(0.3, 0.5);
+                MoveRight(0.5, 1.3);
+                MoveForward(0.3, 1);
+                MoveLeft(0.7, 7);
 
 
             }
@@ -266,13 +288,13 @@ public class BlueDiaboloDetection extends LinearOpMode {
         return(position);
     } // end method telemetryTfod()
 
-    public void MoveForward(double speed, int time_in_seconds) {
+    public void MoveForward(double speed, double time_in_seconds) {
         leftDrive.setPower(speed);
         rightDrive.setPower(speed);
         leftDriveBack.setPower(speed);
         rightDriveBack.setPower(speed);
 
-        sleep((time_in_seconds * 475));
+        sleep(((long) (time_in_seconds * 475)));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
@@ -280,13 +302,30 @@ public class BlueDiaboloDetection extends LinearOpMode {
         leftDriveBack.setPower(0);
         rightDriveBack.setPower(0);
 
-        sleep((time_in_seconds * 100));
+        sleep(((long)(time_in_seconds * 100)));
     }
-    public void MoveRight(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
-        leftDrive.setPower(LFspeed);
-        rightDrive.setPower(RFspeed);
-        leftDriveBack.setPower(LBspeed);
-        rightDriveBack.setPower(RBspeed);
+    public void MoveBackward(double speed, double time_in_seconds) {
+        leftDrive.setPower(speed*-1);
+        rightDrive.setPower(speed*-1);
+        leftDriveBack.setPower(speed*-1);
+        rightDriveBack.setPower(speed*-1);
+
+        sleep(((long) (time_in_seconds * 475)));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+
+        sleep(((long)(time_in_seconds * 100)));
+    }
+
+    public void MoveLeft(double speed, int time_in_seconds) {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed*-1);
+        leftDriveBack.setPower(speed*-1);
+        rightDriveBack.setPower(speed);
 
         sleep((time_in_seconds * 400));
         telemetry.addData("Reached and passed time", "yes");
@@ -298,26 +337,41 @@ public class BlueDiaboloDetection extends LinearOpMode {
         sleep((time_in_seconds * 100));
 
     }
-    public void MoveLeft(double LFspeed, double RFspeed, double LBspeed, double RBspeed, int time_in_seconds) {
-        leftDrive.setPower(LFspeed);
-        rightDrive.setPower(RFspeed);
-        leftDriveBack.setPower(LBspeed);
-        rightDriveBack.setPower(RBspeed);
+    public void MoveRight(double speed, double time_in_seconds) {
+        leftDrive.setPower(speed*-1);
+        rightDrive.setPower(speed);
+        leftDriveBack.setPower(speed);
+        rightDriveBack.setPower(speed*-1);
 
-        sleep((time_in_seconds * 70));
+        sleep(((long) (time_in_seconds * 475)));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         leftDriveBack.setPower(0);
         rightDriveBack.setPower(0);
-        sleep((time_in_seconds * 100));
+        sleep(((long) (time_in_seconds * 475)));
 
     }
 
     public void TurnRight(double speed, double time_in_seconds) {
         leftDrive.setPower(speed*-1);
         rightDrive.setPower(speed);
+
+        sleep(((long) (time_in_seconds * 1000)));
+        telemetry.addData("Reached and passed time", "yes");
+        telemetry.update();
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        leftDriveBack.setPower(0);
+        rightDriveBack.setPower(0);
+
+        sleep(((long) (time_in_seconds * 1000)));
+    }
+
+    public void TurnLeft(double speed, double time_in_seconds) {
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed*-1);
 
         sleep(((long) (time_in_seconds * 1000)));
         telemetry.addData("Reached and passed time", "yes");
