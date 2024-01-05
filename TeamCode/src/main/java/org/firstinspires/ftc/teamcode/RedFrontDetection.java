@@ -31,8 +31,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -48,32 +48,28 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "Concept: Blue Prop Detection", group = "Concept")
+@TeleOp(name = "Concept: Front Red Diabolo", group = "Concept")
 //@Disabled
-public class BlueDiaboloDetection extends LinearOpMode {
-
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-
-    // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
-    // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "Blue_Diabolo_Recognition.tflite";
-    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
-    // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/Blue_Diabolo_Recognition.tflite";
-    // Define the labels recognized in the model for TFOD (must be in training order!)
-    private static final String[] LABELS = {
-            "Blue_Diabolo",
-    };
+public class RedFrontDetection extends LinearOpMode {
 
     private DcMotor leftDrive   = null;
     private DcMotor rightDrive  = null;
     private DcMotor rightDriveBack = null;
     private DcMotor leftDriveBack = null;
+    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-    private ElapsedTime runtime = new ElapsedTime();
+    // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
+    // this is only used for Android Studio when using models in Assets.
+    private static final String TFOD_MODEL_ASSET = "Red_Diabolo_Recognition.tflite";
+    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
+    // this is used when uploading models directly to the RC using the model upload interface.
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/Red_Diabolo_Recognition.tflite";
+    // Define the labels recognized in the model for TFOD (must be in training order!)
+    private static final String[] LABELS = {
+            "Red_Diabolo",
+    };
 
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
+    private ElapsedTime     runtime = new ElapsedTime();
 
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
@@ -93,19 +89,11 @@ public class BlueDiaboloDetection extends LinearOpMode {
         rightDriveBack = hardwareMap.get(DcMotor.class, "right_drive_back");
         leftDriveBack = hardwareMap.get(DcMotor.class, "left_drive_back");
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         leftDrive.setDirection(DcMotor.Direction.FORWARD); //FORWARD
         rightDrive.setDirection(DcMotor.Direction.REVERSE); //REVERSE
         leftDriveBack.setDirection(DcMotor.Direction.FORWARD);
         rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");    //
-        telemetry.update();
-
-        // Wait for the game to start (driver presses PLAY)
 
         initTfod();
         int position;
@@ -119,23 +107,23 @@ public class BlueDiaboloDetection extends LinearOpMode {
         if (opModeIsActive()) {
             //  while (opModeIsActive()) {
 
-                position = FindPixel();
-                telemetry.addData("Position",position);
+            position = FindPixel();
+            telemetry.addData("Position",position);
+            visionPortal.stopStreaming();
+
+            // Push telemetry to the Driver Station.
+            telemetry.update();
+
+            // Save CPU resources; can resume streaming when needed.
+            if (gamepad1.dpad_down) {
                 visionPortal.stopStreaming();
+            } else if (gamepad1.dpad_up) {
+                visionPortal.resumeStreaming();
+            }
 
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                // Share the CPU.
-                sleep(20);
-         //   }
+            // Share the CPU.
+            sleep(20);
+            //   }
         }
 
         // Save more CPU resources when camera is no longer needed.
@@ -246,8 +234,8 @@ public class BlueDiaboloDetection extends LinearOpMode {
             telemetry.update();
 
         } // end while() loop
-        if (runtime.seconds() > 3.0) {
-            position = 2; // Right spike mark
+        if (runtime.seconds() > 5.0) {
+            position = 2; // Right spike mark (Base done)
 
             // Putting Pixel On Right Spike Mark
             TurnRight(0.5,0.2);
@@ -258,30 +246,38 @@ public class BlueDiaboloDetection extends LinearOpMode {
             MoveForward(0.5,0.7);
 
             //Parking Backstage
-            MoveBackward(0.4, 0.5);
-            MoveLeft(0.5, 2);
-            MoveForward(0.5, 2);
-            MoveLeft(0.5, 10);
+            MoveRight(0.4,1.5);
 
         }
         else {
             if (x <= 250)
             {
                 position = 0; // Left spike mark
+
+
+                // Place pixel on the left spike mark (Base done)
+                TurnRight(0.2,0.4);
+                MoveForward(0.3,0.5);
+                TurnLeft(0.2,0.8);
+                MoveForward(0.3,0.5);
+
+                // Park Backstage
+                TurnRight(0.2,0.4);
+                MoveRight(0.5,1.5);
+
             }
             else {
                 position = 1; // Middle spike mark
 
-                //Place Pixel On Middle Spike Mark
-                TurnRight(0.5,0.2);
-                MoveForward(0.4,2.3);
+                //Place Pixel On Middle Spike Mark (Base done)
+                MoveForward(0.4,2.2);
 
                 //Park Backstage
                 MoveBackward(0.3, 0.5);
-                MoveRight(0.5, 1.3);
-                MoveForward(0.3, 1);
-                MoveLeft(0.7, 7);
-
+                MoveLeft(0.5, 1.6);
+                MoveForward(0.4, 2.5);
+                MoveRight(0.7, 6.5);
+                MoveBackward(0.3,0.5);
 
             }
         }
@@ -321,20 +317,20 @@ public class BlueDiaboloDetection extends LinearOpMode {
         sleep(((long)(time_in_seconds * 100)));
     }
 
-    public void MoveLeft(double speed, int time_in_seconds) {
+    public void MoveLeft(double speed, double time_in_seconds) {
         leftDrive.setPower(speed);
         rightDrive.setPower(speed*-1);
         leftDriveBack.setPower(speed*-1);
         rightDriveBack.setPower(speed);
 
-        sleep((time_in_seconds * 400));
+        sleep(((long)(time_in_seconds * 400)));
         telemetry.addData("Reached and passed time", "yes");
         telemetry.update();
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         leftDriveBack.setPower(0);
         rightDriveBack.setPower(0);
-        sleep((time_in_seconds * 100));
+        sleep(((long)(time_in_seconds * 100)));
 
     }
     public void MoveRight(double speed, double time_in_seconds) {
@@ -385,3 +381,4 @@ public class BlueDiaboloDetection extends LinearOpMode {
     }
 
 }   // end class
+

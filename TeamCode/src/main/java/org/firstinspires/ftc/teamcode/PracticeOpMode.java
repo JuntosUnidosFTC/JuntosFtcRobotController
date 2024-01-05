@@ -107,7 +107,7 @@ public class PracticeOpMode extends LinearOpMode {
             // This section is what controls the intake, as well as reversing it and stopping it.
             if(gamepad1.right_bumper)
             {
-                practiceRobot.Intake(0.75);
+                practiceRobot.Intake(0.85);
             } else if (gamepad1.left_bumper) {
                 practiceRobot.Outtake(0.75);
             } else {

@@ -32,11 +32,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
@@ -48,28 +48,31 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "Concept: Front Blue Diabolo", group = "Concept")
+@TeleOp(name = "Concept: Back Red Diabolo", group = "Concept")
 //@Disabled
-public class BlueFrontDetection extends LinearOpMode {
+public class RedBackDetection extends LinearOpMode {
 
-    private DcMotor leftDrive   = null;
-    private DcMotor rightDrive  = null;
-    private DcMotor rightDriveBack = null;
-    private DcMotor leftDriveBack = null;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "Blue_Diabolo_Recognition.tflite";
+    private static final String TFOD_MODEL_ASSET = "Red_Diabolo_Recognition.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/Blue_Diabolo_Recognition.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/Red_Diabolo_Recognition.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-            "Blue_Diabolo",
+            "Red_Diabolo",
     };
-
+    private DcMotor leftDrive   = null;
+    private DcMotor rightDrive  = null;
+    private DcMotor rightDriveBack = null;
+    private DcMotor leftDriveBack = null;
     private ElapsedTime     runtime = new ElapsedTime();
+
+    static final double     FORWARD_SPEED = 0.6;
+    static final double     TURN_SPEED    = 0.5;
+
 
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
@@ -94,6 +97,20 @@ public class BlueFrontDetection extends LinearOpMode {
         leftDriveBack.setDirection(DcMotor.Direction.FORWARD);
         rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
 
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        leftDrive.setDirection(DcMotor.Direction.FORWARD); //FORWARD
+        rightDrive.setDirection(DcMotor.Direction.REVERSE); //REVERSE
+        leftDriveBack.setDirection(DcMotor.Direction.FORWARD);
+        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Ready to run");    //
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
 
         initTfod();
         int position;
@@ -211,7 +228,7 @@ public class BlueFrontDetection extends LinearOpMode {
         //Recognition myrecognition = null;
         runtime.reset();
 
-        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 3.0)) {
+        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 5.0)) {
 
             List<Recognition> currentRecognitions = tfod.getRecognitions();
             telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -226,7 +243,7 @@ public class BlueFrontDetection extends LinearOpMode {
                 telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
                 telemetry.addData("- Position", "%.0f / %.0f", x, y);
                 telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-                sleep (500);      //originally 20 ms
+                sleep (20);      //originally 20 ms
                 //myrecognition = recognition;
             } // end for() loop
 
@@ -234,21 +251,22 @@ public class BlueFrontDetection extends LinearOpMode {
             telemetry.update();
 
         } // end while() loop
-        if (runtime.seconds() > 3.0) {
+        if (runtime.seconds() > 5.0) {
             position = 2; // Right spike mark
 
             // Putting Pixel On Right Spike Mark (Base done)
-            MoveForward(0.5,0.5);
-            TurnRight(0.3,0.4);
+            TurnRight(0.5,0.2);
+            MoveForward(0.3,0.5);
+            TurnRight(0.3,0.2);
             MoveForward(0.4,0.5);
-            TurnRight(0.42,0.6);
+            TurnRight(0.3,0.3);
             MoveForward(0.5,0.7);
 
             //Parking Backstage
-            MoveBackward(0.4, 2);
-            TurnLeft(0.3, 0.4);
+            MoveBackward(0.4, 0.5);
             MoveLeft(0.5, 2);
-
+            MoveForward(0.5, 2);
+            MoveLeft(0.5, 10);
 
         }
         else {
@@ -256,27 +274,29 @@ public class BlueFrontDetection extends LinearOpMode {
             {
                 position = 0; // Left spike mark
 
-                //Place Pixel On Middle Spike Mark (Mostly done)
-                MoveForward(0.4,0.9);
-                TurnLeft(0.4, 0.3);
-                MoveForward(0.4,0.5);
+                // Place pixel on the left spike mark (Base done)
+                TurnLeft(0.3,0.5);
+                MoveForward(0.4,1.5);
 
                 // Park Backstage
-                MoveBackward(0.4, 1);
-                MoveLeft(0.5, 6);
+                MoveBackward(0.4,1.5);
+                TurnRight(0.4,0.5);
+                MoveForward(0.4,2.5);
+                MoveRight(0.2,0.3);
 
             }
             else {
                 position = 1; // Middle spike mark
 
-                //Place Pixel On Middle Spike Mark (Mostly done)
-                TurnRight(0.5,0.2);
-                MoveForward(0.4,2.3);
+                //Place Pixel On Middle Spike Mark (Base done)
+                MoveForward(0.4,2.2);
 
                 //Park Backstage
-                MoveBackward(0.4, 2.3);
-                MoveLeft(0.5, 1.3);
-
+                MoveBackward(0.3, 0.5);
+                MoveLeft(0.5, 1.6);
+                MoveForward(0.4, 2.5);
+                MoveRight(0.7, 6.5);
+                MoveBackward(0.3,0.5);
 
             }
         }

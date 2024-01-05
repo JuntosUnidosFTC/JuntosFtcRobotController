@@ -91,8 +91,8 @@ public class Teleop {
     }
     public void SlideDownStart()
     {
-        leftSlideMotor.setPower(0.8); //Placeholder Value!!!
-        rightSlideMotor.setPower(0.8); //Placeholder Value!!!
+        leftSlideMotor.setPower(1); //Placeholder Value!!!
+        rightSlideMotor.setPower(1); //Placeholder Value!!!
     }
     public void SlideStop()
     {
