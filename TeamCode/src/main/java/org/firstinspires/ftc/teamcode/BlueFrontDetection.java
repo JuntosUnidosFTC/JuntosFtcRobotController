@@ -211,7 +211,7 @@ public class BlueFrontDetection extends LinearOpMode {
         //Recognition myrecognition = null;
         runtime.reset();
 
-        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 3.0)) {
+        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 4.0)) {
 
             List<Recognition> currentRecognitions = tfod.getRecognitions();
             telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -234,10 +234,10 @@ public class BlueFrontDetection extends LinearOpMode {
             telemetry.update();
 
         } // end while() loop
-        if (runtime.seconds() > 3.0) {
+        if (runtime.seconds() > 4.0) {
             position = 2; // Right spike mark
 
-            // Putting Pixel On Right Spike Mark (Base done)
+            // Putting Pixel On Right Spike Mark (Mostly done)
             MoveForward(0.5,0.5);
             TurnRight(0.3,0.4);
             MoveForward(0.4,0.5);
@@ -247,8 +247,7 @@ public class BlueFrontDetection extends LinearOpMode {
             //Parking Backstage
             MoveBackward(0.4, 2);
             TurnLeft(0.3, 0.4);
-            MoveLeft(0.5, 2);
-
+            MoveLeft(0.5, 5);
 
         }
         else {
@@ -256,7 +255,7 @@ public class BlueFrontDetection extends LinearOpMode {
             {
                 position = 0; // Left spike mark
 
-                //Place Pixel On Middle Spike Mark (Mostly done)
+                //Place Pixel On Left Spike Mark (Mostly done)
                 MoveForward(0.4,0.9);
                 TurnLeft(0.4, 0.3);
                 MoveForward(0.4,0.5);
@@ -271,11 +270,11 @@ public class BlueFrontDetection extends LinearOpMode {
 
                 //Place Pixel On Middle Spike Mark (Mostly done)
                 TurnRight(0.5,0.2);
-                MoveForward(0.4,2.3);
+                MoveForward(0.4,2.33);
 
                 //Park Backstage
                 MoveBackward(0.4, 2.3);
-                MoveLeft(0.5, 1.3);
+                MoveLeft(0.5, 5);
 
 
             }

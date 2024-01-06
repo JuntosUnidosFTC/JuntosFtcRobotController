@@ -211,7 +211,7 @@ public class RedFrontDetection extends LinearOpMode {
         //Recognition myrecognition = null;
         runtime.reset();
 
-        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 3.0)) {
+        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 4.0)) {
 
             List<Recognition> currentRecognitions = tfod.getRecognitions();
             telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -234,19 +234,21 @@ public class RedFrontDetection extends LinearOpMode {
             telemetry.update();
 
         } // end while() loop
-        if (runtime.seconds() > 5.0) {
-            position = 2; // Right spike mark (Base done)
+        if (runtime.seconds() > 4.0) {
+            position = 2; // Right spike mark
 
-            // Putting Pixel On Right Spike Mark
-            TurnRight(0.5,0.2);
+            //Place Pixel On Right Spike Mark (Base done)
+            TurnRight(0.4,0.24);
             MoveForward(0.3,0.5);
-            TurnRight(0.3,0.2);
+            TurnRight(0.3,0.3);
             MoveForward(0.4,0.5);
             TurnRight(0.3,0.3);
-            MoveForward(0.5,0.7);
+            MoveForward(0.4,0.9);
 
             //Parking Backstage
-            MoveRight(0.4,1.5);
+            MoveBackward(0.4, 1);
+            TurnLeft(0.3,0.5);
+            MoveRight(0.5, 3.5);
 
         }
         else {
@@ -254,31 +256,28 @@ public class RedFrontDetection extends LinearOpMode {
             {
                 position = 0; // Left spike mark
 
+                //Place Pixel On Left Spike Mark (Base done)
+                TurnRight(0.3,0.6666);
+                MoveForward(0.4,1.0);
+                TurnLeft(0.3,0.5333);
+                MoveForward(0.3,0.7);
 
-                // Place pixel on the left spike mark (Base done)
-                TurnRight(0.2,0.4);
-                MoveForward(0.3,0.5);
-                TurnLeft(0.2,0.8);
-                MoveForward(0.3,0.5);
-
-                // Park Backstage
-                TurnRight(0.2,0.4);
-                MoveRight(0.5,1.5);
-
+                //Parking Backstage
+                MoveBackward(0.3, 0.2);
+                MoveRight(0.4,0.3);
+                TurnRight(0.4,0.4);
+                MoveRight(0.5,3.4);
             }
             else {
                 position = 1; // Middle spike mark
 
-                //Place Pixel On Middle Spike Mark (Base done)
-                MoveForward(0.4,2.2);
+                //Place Pixel On Middle Spike Mark (Done)
+                TurnRight(0.5,0.2);
+                MoveForward(0.4,2.15);
 
-                //Park Backstage
-                MoveBackward(0.3, 0.5);
-                MoveLeft(0.5, 1.6);
-                MoveForward(0.4, 2.5);
-                MoveRight(0.7, 6.5);
-                MoveBackward(0.3,0.5);
-
+                //Park Backstage (Done)
+                MoveBackward(0.3, 1.2);
+                MoveRight(0.5, 3);
             }
         }
         return(position);

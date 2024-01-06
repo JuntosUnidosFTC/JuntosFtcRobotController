@@ -59,11 +59,11 @@ public class Teleop {
 
     public void Intake(double Power)
     {
-        intakeMotor.setPower(-Power);
+        intakeMotor.setPower(-Power*1.5);
     }
     public void Outtake(double Power)
     {
-        intakeMotor.setPower(Power);
+        intakeMotor.setPower(Power*1.5);
     }
     public void IntakeStop()
     {

@@ -221,7 +221,7 @@ public class BlueBackDetection extends LinearOpMode {
         //Recognition myrecognition = null;
         runtime.reset();
 
-        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 3.0)) {
+        while (conf < 0.75 && opModeIsActive() && (runtime.seconds() <= 4.0)) {
 
             List<Recognition> currentRecognitions = tfod.getRecognitions();
             telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -244,10 +244,10 @@ public class BlueBackDetection extends LinearOpMode {
             telemetry.update();
 
         } // end while() loop
-        if (runtime.seconds() > 3.0) {
+        if (runtime.seconds() > 4.0) {
             position = 2; // Right spike mark
 
-            // Putting Pixel On Right Spike Mark (Base done)
+            // Putting Pixel On Right Spike Mark (Done)
             TurnRight(0.5,0.2);
             MoveForward(0.3,0.5);
             TurnRight(0.3,0.2);
@@ -256,33 +256,38 @@ public class BlueBackDetection extends LinearOpMode {
             MoveForward(0.5,0.7);
 
             //Parking Backstage
-            MoveBackward(0.4, 0.5);
+            /*MoveBackward(0.4, 0.5);
             MoveLeft(0.5, 2);
             MoveForward(0.5, 2);
-            MoveLeft(0.5, 10);
+            MoveLeft(0.5, 10); */
 
         }
         else {
             if (x <= 250)
             {
                 position = 0; // Left spike mark
+
+                //Place Pixel On Left Spike Mark (Done)
                 TurnRight(0.4,0.4);
-                MoveForward(0.2,1.0);
+                MoveForward(0.35,1.0);
                 TurnLeft(0.4,0.8);
                 MoveForward(0.3,0.5);
+
+                // Park Backstage(To be done)
+
             }
             else {
                 position = 1; // Middle spike mark
 
-                //Place Pixel On Middle Spike Mark (base done)
+                //Place Pixel On Middle Spike Mark (Done)
                 TurnRight(0.5,0.2);
                 MoveForward(0.4,2.3);
 
                 //Park Backstage
-                MoveBackward(0.3, 0.5);
+                /* MoveBackward(0.4, 0.5);
                 MoveRight(0.5, 1.3);
                 MoveForward(0.3, 1);
-                MoveLeft(0.7, 7);
+                MoveLeft(0.7, 7); */
 
 
             }
