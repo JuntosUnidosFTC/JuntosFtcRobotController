@@ -257,15 +257,19 @@ public class RedFrontDetection extends LinearOpMode {
                 position = 0; // Left spike mark
 
                 //Place Pixel On Left Spike Mark (Base done)
-                TurnRight(0.3,0.6666);
-                MoveForward(0.4,1.0);
-                TurnLeft(0.3,0.5333);
-                MoveForward(0.3,0.7);
+                TurnRight(0.3,0.65);
+                MoveForward(0.3,1.1);
+                TurnLeft(0.3,0.4);
+                MoveForward(0.3,0.9);
+                TurnLeft(0.3,0.4);
+                MoveForward(0.3,0.3);
+                TurnLeft(0.3,0.6);
+                MoveForward(0.3,0.8);
 
                 //Parking Backstage
                 MoveBackward(0.3, 0.2);
                 MoveRight(0.4,0.3);
-                TurnRight(0.4,0.4);
+                TurnRight(0.3,0.8);
                 MoveRight(0.5,3.4);
             }
             else {
@@ -273,11 +277,11 @@ public class RedFrontDetection extends LinearOpMode {
 
                 //Place Pixel On Middle Spike Mark (Done)
                 TurnRight(0.5,0.2);
-                MoveForward(0.4,2.15);
+                MoveForward(0.4,2.24);
 
                 //Park Backstage (Done)
-                MoveBackward(0.3, 1.2);
-                MoveRight(0.5, 3);
+                MoveBackward(0.3, 1.9);
+                MoveRight(0.5, 4.4);
             }
         }
         return(position);

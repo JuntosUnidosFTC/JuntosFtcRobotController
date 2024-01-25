@@ -32,7 +32,6 @@
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -57,12 +56,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="13727", group="Linear Opmode")
 //@Disabled
-public class PracticeOpMode extends LinearOpMode {
+public class OpMode13727 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     //Motors F = Front B = Back
     Teleop practiceRobot = new Teleop(this);
+    //Encoders13727 practiceRobot = new Encoders13727(this);
     private Servo BoxServo = null;
     @Override
     public void runOpMode() {

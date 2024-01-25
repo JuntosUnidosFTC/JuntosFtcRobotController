@@ -15,6 +15,9 @@ public class Teleop {
     private DcMotor leftSlideMotor = null; //left_slide_motor
     private DcMotor rightSlideMotor = null; //right_slide_motor
 
+    private DcMotor leftSlideEncoder = null; //left_slide_encoder
+    private DcMotor rightSlideEncoder = null; //right_slide_encoder
+    public int targetHeight = 0; // Height we stop moving the slides up
     private Servo boxServo = null; //box_servo
     private LinearOpMode CurrentOpMode = null;
     public Teleop(LinearOpMode opMode) {
@@ -30,6 +33,8 @@ public class Teleop {
         boxServo = CurrentOpMode.hardwareMap.get(Servo.class, "box_servo");
         leftSlideMotor = CurrentOpMode.hardwareMap.get(DcMotor.class, "left_slide_motor");
         rightSlideMotor = CurrentOpMode.hardwareMap.get(DcMotor.class,"right_slide_motor");
+        leftSlideEncoder = CurrentOpMode.hardwareMap.get(DcMotor.class, "left_slide_encoder");
+        rightSlideEncoder = CurrentOpMode.hardwareMap.get(DcMotor.class, "right_slide_encoder");
 
         leftDriveF.setDirection(DcMotor.Direction.FORWARD);
         leftDriveB.setDirection(DcMotor.Direction.FORWARD);
@@ -39,6 +44,10 @@ public class Teleop {
         leftSlideMotor.setDirection(DcMotor.Direction.FORWARD);
         rightSlideMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        leftSlideEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftSlideEncoder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightSlideEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideEncoder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void Move(double LFPower, double RFPower, double LBPower, double RBPower)
@@ -98,6 +107,13 @@ public class Teleop {
     {
         leftSlideMotor.setPower(0);
         rightSlideMotor.setPower(0);
+    }
+    // New encoder stuff
+
+    public void TargetSet()
+    {
+        rightSlideEncoder.setTargetPosition(targetHeight);
+        leftSlideEncoder.setTargetPosition(targetHeight);
     }
 
 }
