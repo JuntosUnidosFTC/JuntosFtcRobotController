@@ -91,6 +91,8 @@ public class Encoders13727 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        practiceRobot.targetHeight = 0;
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -130,9 +132,9 @@ public class Encoders13727 extends LinearOpMode {
                 telemetry.update();
             } else {
                 practiceRobot.CloseBox();
-                telemetry.addData("Servo","MiddleBox");
+             /*   telemetry.addData("Servo","MiddleBox");
                 telemetry.addData("ServoPosition", BoxServo.getPosition());
-                telemetry.update();
+                telemetry.update(); */
             }
 /*
             if(gamepad1.y)
@@ -145,19 +147,41 @@ public class Encoders13727 extends LinearOpMode {
             }
 */
             // Use encoders to have more precise movement
-            if(gamepad1.right_trigger > 0) {
-                practiceRobot.targetHeight -= 5;
+            if(gamepad1.a) {
+                practiceRobot.targetHeight = -385;
+                practiceRobot.TargetSet();
+                practiceRobot.SlideUpStart();
             }
-            if(gamepad1.left_trigger > 0) {
-                practiceRobot.targetHeight += 5;
+            if(gamepad1.x) {
+                practiceRobot.targetHeight = -770;
+                practiceRobot.TargetSet();
+                practiceRobot.SlideUpStart();
             }
-            practiceRobot.TargetSet();
+            if(gamepad1.y) {
+                practiceRobot.targetHeight = -1000;
+                practiceRobot.TargetSet();
+                practiceRobot.SlideUpStart();
+            }
 
+            if(gamepad1.left_trigger > 0) {
+                practiceRobot.SlideStop();
+                practiceRobot.targetHeight = 0;
+                practiceRobot.TargetSet();
+                practiceRobot.SlideDownStart();
+            }
+
+            if(practiceRobot.TargetReached()) {
+                telemetry.addData("Current Pos: ", practiceRobot.getCurrentPos());
+                telemetry.addData("Target: ", practiceRobot.getTargetHt());
+                telemetry.update();
+                practiceRobot.SlideStop();
+            }
+            telemetry.update();
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+ //           telemetry.addData("Status", "Run Time: " + runtime.toString());
             //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.update();
+ //           telemetry.update();
         }
     }
 }
