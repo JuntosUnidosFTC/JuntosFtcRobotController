@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Teleop {
     private DcMotor leftDriveF = null; //left_drive_front
@@ -14,10 +15,12 @@ public class Teleop {
     private DcMotor intakeMotor = null; //intake_motor
     private DcMotor leftSlideMotor = null; //left_slide_motor
     private DcMotor rightSlideMotor = null; //right_slide_motor
+    public TouchSensor boxTouch = null; //box_touch
 
  //   private DcMotor leftSlideEncoder = null; //left_slide_encoder
  //   private DcMotor rightSlideEncoder = null; //right_slide_encoder
     public int targetHeight = 0; // Height we stop moving the slides up
+
     private Servo boxServo = null; //box_servo
     private LinearOpMode CurrentOpMode = null;
     public Teleop(LinearOpMode opMode) {
@@ -53,6 +56,8 @@ public class Teleop {
         leftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        boxTouch = CurrentOpMode.hardwareMap.touchSensor.get("box_touch");
     }
 
     public void Move(double LFPower, double RFPower, double LBPower, double RBPower)
@@ -100,8 +105,8 @@ public class Teleop {
 
     public void SlideUpStart()
     {
-        leftSlideMotor.setPower(-0.2); //Placeholder Value!!!
-        rightSlideMotor.setPower(-0.2); //Placeholder Value!!!
+        leftSlideMotor.setPower(-0.4); //Placeholder Value!!!
+        rightSlideMotor.setPower(-0.4); //Placeholder Value!!!
     }
     public void SlideDownStart()
     {

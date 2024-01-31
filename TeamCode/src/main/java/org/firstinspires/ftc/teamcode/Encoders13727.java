@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 //import org.firstinspires.ftc.robotcontroller.external.samples.RobotHardware;
 
@@ -65,8 +66,11 @@ public class Encoders13727 extends LinearOpMode {
 
     //Insert encoder logic from Teleop
     Teleop practiceRobot = new Teleop(this);
-    Teleop targetHeight  = new Teleop(this);
+ /*   Teleop targetHeight  = new Teleop(this);
     Teleop TargetSet = new Teleop(this);
+    Boolean SlidingBox = new Teleop(this); */
+    public Boolean SlidingBox = Boolean.FALSE;
+
 
 
     private Servo BoxServo = null;
@@ -148,26 +152,33 @@ public class Encoders13727 extends LinearOpMode {
 */
             // Use encoders to have more precise movement
             if(gamepad1.a) {
-                practiceRobot.targetHeight = -385;
+                practiceRobot.targetHeight = -500;
                 practiceRobot.TargetSet();
                 practiceRobot.SlideUpStart();
+                SlidingBox = Boolean.TRUE;
             }
             if(gamepad1.x) {
-                practiceRobot.targetHeight = -770;
-                practiceRobot.TargetSet();
-                practiceRobot.SlideUpStart();
-            }
-            if(gamepad1.y) {
                 practiceRobot.targetHeight = -1000;
                 practiceRobot.TargetSet();
                 practiceRobot.SlideUpStart();
+                SlidingBox = Boolean.TRUE;
+            }
+            if(gamepad1.y) {
+                practiceRobot.targetHeight = -1500;
+                practiceRobot.TargetSet();
+                practiceRobot.SlideUpStart();
+                SlidingBox = Boolean.TRUE;
             }
 
             if(gamepad1.left_trigger > 0) {
                 practiceRobot.SlideStop();
-                practiceRobot.targetHeight = 0;
+                practiceRobot.targetHeight = 150;
                 practiceRobot.TargetSet();
                 practiceRobot.SlideDownStart();
+            }
+            if (practiceRobot.boxTouch.isPressed() && SlidingBox == Boolean.TRUE) {
+                practiceRobot.SlideStop();
+                SlidingBox = Boolean.FALSE;
             }
 
             if(practiceRobot.TargetReached()) {
