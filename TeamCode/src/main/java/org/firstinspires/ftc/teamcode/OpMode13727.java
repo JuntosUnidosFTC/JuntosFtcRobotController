@@ -64,6 +64,8 @@ public class OpMode13727 extends LinearOpMode {
     Teleop practiceRobot = new Teleop(this);
     //Encoders13727 practiceRobot = new Encoders13727(this);
     private Servo BoxServo = null;
+
+    private Servo droneServo = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -71,6 +73,7 @@ public class OpMode13727 extends LinearOpMode {
         practiceRobot.init();
 
         BoxServo = hardwareMap.get(Servo.class, "box_servo");
+        droneServo = hardwareMap.get(Servo.class, "drone_servo");
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).

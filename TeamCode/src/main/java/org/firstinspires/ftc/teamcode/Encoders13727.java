@@ -152,25 +152,25 @@ public class Encoders13727 extends LinearOpMode {
 */
             // Use encoders to have more precise movement
             if(gamepad1.a) {
-                practiceRobot.targetHeight = -500;
-                practiceRobot.TargetSet();
-                practiceRobot.SlideUpStart();
-                SlidingBox = Boolean.TRUE;
-            }
-            if(gamepad1.x) {
                 practiceRobot.targetHeight = -1000;
                 practiceRobot.TargetSet();
                 practiceRobot.SlideUpStart();
                 SlidingBox = Boolean.TRUE;
             }
-            if(gamepad1.y) {
+            if(gamepad1.x) {
                 practiceRobot.targetHeight = -1500;
                 practiceRobot.TargetSet();
                 practiceRobot.SlideUpStart();
                 SlidingBox = Boolean.TRUE;
             }
+            if(gamepad1.y) {
+                practiceRobot.targetHeight = -2000;
+                practiceRobot.TargetSet();
+                practiceRobot.SlideUpStart();
+                SlidingBox = Boolean.TRUE;
+            }
 
-            if(gamepad1.left_trigger > 0) {
+            if(gamepad1.right_trigger > 0) {
                 practiceRobot.SlideStop();
                 practiceRobot.targetHeight = 150;
                 practiceRobot.TargetSet();
@@ -179,6 +179,13 @@ public class Encoders13727 extends LinearOpMode {
             if (practiceRobot.boxTouch.isPressed() && SlidingBox == Boolean.TRUE) {
                 practiceRobot.SlideStop();
                 SlidingBox = Boolean.FALSE;
+            }
+
+            if(gamepad1.left_trigger > 0) {
+                practiceRobot.LaunchDrone();
+            }
+            else{
+                practiceRobot.ResetDrone();
             }
 
             if(practiceRobot.TargetReached()) {

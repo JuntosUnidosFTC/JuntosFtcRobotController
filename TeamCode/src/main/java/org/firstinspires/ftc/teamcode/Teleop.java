@@ -22,6 +22,8 @@ public class Teleop {
     public int targetHeight = 0; // Height we stop moving the slides up
 
     private Servo boxServo = null; //box_servo
+
+    private Servo droneServo = null;
     private LinearOpMode CurrentOpMode = null;
     public Teleop(LinearOpMode opMode) {
         CurrentOpMode = opMode;
@@ -34,6 +36,7 @@ public class Teleop {
         rightDriveB = CurrentOpMode.hardwareMap.get(DcMotor.class, "right_drive_back");
         intakeMotor = CurrentOpMode.hardwareMap.get(DcMotor.class, "intake_motor");
         boxServo = CurrentOpMode.hardwareMap.get(Servo.class, "box_servo");
+        droneServo = CurrentOpMode.hardwareMap.get(Servo.class, "drone_servo");
         leftSlideMotor = CurrentOpMode.hardwareMap.get(DcMotor.class, "left_slide_motor");
         rightSlideMotor = CurrentOpMode.hardwareMap.get(DcMotor.class,"right_slide_motor");
      //   leftSlideEncoder = CurrentOpMode.hardwareMap.get(DcMotor.class, "left_slide_encoder");
@@ -101,6 +104,16 @@ public class Teleop {
     public void CloseBox()
     {
         boxServo.setPosition(0.6); //Placeholder Value!!!
+    }
+
+    public void LaunchDrone()
+    {
+        droneServo.setPosition(0.6); //Placeholder Value!!!
+    }
+
+    public void ResetDrone()
+    {
+        droneServo.setPosition(0.0); //Placeholder Value!!!
     }
 
     public void SlideUpStart()
